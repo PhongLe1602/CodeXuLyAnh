@@ -14,6 +14,7 @@
 # Install thư viện
 
 > pip install numpy
+<br/>
 > pip install opencv-python
 > pip install imageio
 > pip install Flask
