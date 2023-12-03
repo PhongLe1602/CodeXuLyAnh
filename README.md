@@ -13,10 +13,10 @@
 - Image
 # Install thư viện
 
-pip install numpy
-pip install opencv-python
-pip install imageio
-pip install Flask
+- pip install numpy
+- pip install opencv-python
+- pip install imageio
+- pip install Flask
 
 
 # Cách chạy
