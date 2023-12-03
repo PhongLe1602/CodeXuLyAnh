@@ -3,7 +3,7 @@
 
 # By Lê Văn Phong
 
-# Các thư viện sử dung
+# Các thư viện sử dụng
 - numpy
 - cv2
 - math
