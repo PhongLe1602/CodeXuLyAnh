@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Result Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .image-container img {
+            width: 48%;
+            border: 2px solid #ddd; /* Thêm viền cho ảnh */
+            border-radius: 8px; /* Làm tròn góc */
+        }
+
+        .arrow {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0; 
+            height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #333; /* Màu mũi tên */
+            margin: 0 10px; /* Khoảng cách giữa mũi tên và ảnh */
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Result</h1>
+
+    <p>Selected Option: {{ selected_option }}</p>
+
+    <div class="image-container">
+        <img src="{{origional_image_path}}" alt="Original Image">
+        <div class="arrow"></div>
+        {% if value == 0 %}
+        
+        <img src="{{new_image_path}}" alt="Processed Image">
+        {% endif %}
+        {% if value == 1 %}
+            <p>{{encode}}</p>
+        {% endif %}
+        {% if value == 2 %}
+            <p>Số bit sau khi nén: {{ bit}}</p>
+        {% endif %}
+
+        
+    </div>
+</body>
+</html>

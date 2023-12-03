@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+
+        h1 {
+            color: #555;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #555;
+        }
+
+        #image {
+            display: none;
+        }
+
+        #image-label {
+            display: inline-block;
+            padding: 12px;
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        #options {
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 1.1em;
+        }
+
+        #thresholding-options {
+            display: none;
+        }
+
+        input[type="submit"] {
+            background-color: #2ecc71;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        #image-preview {
+            display: none;
+            margin-top: 30px;
+        }
+
+        #preview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Thêm phần này để xử lý sự kiện kéo và thả */
+        #image-drop-area {
+            border: 2px dashed #3498db;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #image-drop-area.hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Upload</h1>
+
+    <form method="POST" action="/submit" enctype="multipart/form-data" id="upload-form">
+        <div id="image-drop-area" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)" ondragleave="dragLeaveHandler(event)">
+            <label for="image" id="image-label">Drag and drop image here or click to select</label>
+            <input type="file" name="image" id="image" accept="image/*" style="display:none;" onchange="displayImage()">
+        </div>
+        <br>
+
+        <label for="options">Select Option:</label>
+        <select name="options" id="options" required onchange="displayImage()">
+            <option value="image_negative">Image Negative</option>
+            <option value="log_transformation">Logarit Transformation</option>
+            <option value="thresholding">Thresholding Transformation</option>
+            <option value="median_filter">Median Filter</option>
+            <option value="histogram_equalization">Histogram Equalization</option>
+            <option value="laplacian">Laplacian</option>
+            <option value="exponential_transformation">Exponential Transformation</option>
+            <option value="weighted_average">Weighted average filter(bộ lọc trung vị có trọng số)</option>
+            <option value="knn_average">Filter averages the k closest values</option>
+            <option value="roberts">Operator Roberts(Toán tử roberts)</option>
+            <option value="sobel">Operator Sobel(Toán tử sobel)</option>
+            <option value="prewitt">Operator Prewitt(Toán tử prewitt)</option>
+            <option value="canny">Method Canny(Phương pháp canny)</option>
+            <option value="ostu">Algorithm Ostu(Thuật toán ostu)</option>
+            <option value="rlc">Compress images with RLC(nén ảnh bằng RLC)</option>
+            <option value="huffman">Compress images with Huffman(nén ảnh bằng huffman)</option>
+            <option value="lzw">Compress images with LZW(nén ảnh bằng lzw)</option>
+            <option value="erosion">Photo Shrink(Co ảnh)</option>
+            <option value="dilation">Image dilation(Co ảnh)</option>
+            <option value="opening">Open image(Mở ảnh)</option>
+            <option value="close">Close image(Đóng ảnh)</option>
+            
+        </select>
+        <br>
+
+        <div id="thresholding-options">
+            <label for="threshold">Threshold Value:</label>
+            <input type="range" name="threshold" id="threshold" min="0" max="255" value="128" oninput="displayImage()">
+            <span id="threshold-value">128</span>
+        </div>
+        <br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="image-preview">
+        <h2>Selected Image Preview:</h2>
+        <img id="preview" src="" alt="Selected Image">
+    </div>
+
+    <script>
+        function displayImage() {
+            var input = document.getElementById('image');
+            var preview = document.getElementById('preview');
+            var previewContainer = document.getElementById('image-preview');
+            var thresholdingOptions = document.getElementById('thresholding-options');
+            var optionsSelect = document.getElementById('options');
+            var thresholdInput = document.getElementById('threshold');
+            var thresholdValueSpan = document.getElementById('threshold-value');
+
+            previewContainer.style.display = 'block';
+
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+
+            if (optionsSelect.value === 'thresholding') {
+                thresholdingOptions.style.display = 'block';
+            } else {
+                thresholdingOptions.style.display = 'none';
+            }
+
+            thresholdValueSpan.innerText = thresholdInput.value;
+        }
+
+        document.getElementById('threshold').addEventListener('input', function () {
+            displayImage();
+        });
+
+        function dropHandler(event) {
+            event.preventDefault();
+            var file = event.dataTransfer.files[0];
+            handleFile(file);
+        }
+
+        function dragOverHandler(event) {
+            event.preventDefault();
+            var dropArea = document.getElementById('image-drop-area');
+            dropArea.classList.add('hover');
+        }
+
+        function dragLeaveHandler(event) {
+            event.preventDefault();
+            var dropArea = document.getElementById('image-drop-area');
+            dropArea.classList.remove('hover');
+        }
+
+        function handleFile(file) {
+            var input = document.getElementById('image');
+            var preview = document.getElementById('preview');
+            var previewContainer = document.getElementById('image-preview');
+            var thresholdingOptions = document.getElementById('thresholding-options');
+            var optionsSelect = document.getElementById('options');
+            var thresholdInput = document.getElementById('threshold');
+            var thresholdValueSpan = document.getElementById('threshold-value');
+
+            previewContainer.style.display = 'block';
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+
+            if (optionsSelect.value === 'thresholding') {
+                thresholdingOptions.style.display = 'block';
+            } else {
+                thresholdingOptions.style.display = 'none';
+            }
+
+            input.files = [file];
+            thresholdValueSpan.innerText = thresholdInput.value;
+        }
+    </script>
+</body>
+</html>
