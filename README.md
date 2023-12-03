@@ -11,6 +11,12 @@
 - Flask import Flask, render_template, request
 - imageio
 - Image
+# Install thư viện
+***pip install numpy
+pip install opencv-python
+pip install imageio
+pip install Flask
+***
 # Cách chạy
 > python appmain.py
 # Các thuật toán 
