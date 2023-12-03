@@ -17,6 +17,8 @@
 - pip install opencv-python
 - pip install imageio
 - pip install Flask
+# Install thư môi trường và thư viện 
+> pip install -r requirements.txt
 
 
 # Cách chạy
