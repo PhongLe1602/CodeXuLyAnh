@@ -32,6 +32,6 @@
     16 Compress images with Huffman(nén ảnh bằng huffman)
     17 Compress images with LZW(nén ảnh bằng lzw)
     18 Photo Shrink(Co ảnh)
-    19 Image dilation(Co ảnh)
+    19 Image dilation(Giãn ảnh)
     20 Open image(Mở ảnh)
     21 Close image(Đóng ảnh)
